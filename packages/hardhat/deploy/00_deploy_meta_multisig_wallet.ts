@@ -1,5 +1,6 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
+import { ethers } from "hardhat";
 
 /**
  * Deploys a "MetaMultiSigWallet" contract
@@ -20,14 +21,19 @@ const deployMetaMultiSigWallet: DeployFunction = async function (hre: HardhatRun
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
+  const etherValue = ethers.utils.parseEther('0.1');
+
   await deploy("MetaMultiSigWallet", {
     from: deployer,
     // Contract constructor arguments
-    args: [31337, ["0x92B3ec5c8eD44ff3DD567021969281DE7d70d513"], 1],
+    args: [31337, ["0x8dbba46d25c0fbE5ee609DCC9D36Fb34977b6E35", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", "0x97843608a00e2bbc75ab0C1911387E002565DEDE"], 3],
+
+    // args: [11155111, ["0x8dbba46d25c0fbE5ee609DCC9D36Fb34977b6E35", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", "0x97843608a00e2bbc75ab0C1911387E002565DEDE"], 3],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
     autoMine: true,
+    value: etherValue
   });
 
   // Get the deployed contract
